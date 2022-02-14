@@ -1,0 +1,7 @@
+{
+    "network": "matic",
+    "market": "0x0988Fb1C153a6f6492218Ead6b17fd795d6D18F9",
+    "marketStartBlock": 12912179,
+    "vaultFactory": "0x85Aa7f78BdB2DE8F3e0c0010d99AD5853fFcfC63",
+    "vaultFactoryStartBlock": 12743932
+}

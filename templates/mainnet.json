@@ -1,0 +1,12 @@
+{
+    "network": "mainnet",
+    "market": "0x0988Fb1C153a6f6492218Ead6b17fd795d6D18F9",
+    "marketStartBlock": 12912179,
+    "vaultFactory": "0x70D841fa16D8caD638bEff560Ec442c25F293cE8",
+    "vaultFactoryStartBlock": 13315618,
+    "singleVaultFactory": "0x85Aa7f78BdB2DE8F3e0c0010d99AD5853fFcfC63",
+    "singleVaultFactoryStartBlock": 13056457,
+    "misoMarket": "0x70e3021C31d199dec9cBf23b89C08A64E3701A0C",
+    "misoMarketStartBlock": 13965593,
+    "isMainnet": true
+}
