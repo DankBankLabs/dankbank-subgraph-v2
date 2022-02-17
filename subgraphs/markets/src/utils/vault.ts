@@ -2,7 +2,7 @@ import { Address, BigInt } from "@graphprotocol/graph-ts";
 
 import { TokenVault } from "../../generated/schema";
 import { ERC721TokenVault } from "../../generated/templates/ERC721TokenVault/ERC721TokenVault";
-import { bigZero } from "./constants";
+import { bigZero } from "../../../../packages/constants";
 
 export function getTokenVault(address: string): TokenVault {
   let vault = TokenVault.load(address);

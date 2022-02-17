@@ -1,7 +1,7 @@
 import { ByteArray, Address, BigInt } from "@graphprotocol/graph-ts";
 
 import { LiquidityPool, LpTokenBalance } from "../../generated/schema";
-import { bigZero, weiPerEth } from "./constants";
+import { bigZero, weiPerEth } from "../../../../packages/constants";
 import { ERC721TokenVault } from "../../generated/templates/ERC721TokenVault/ERC721TokenVault";
 import { DankBankMarket } from "../../generated/DankBankMarket/DankBankMarket";
 import { ensureUserCreated } from "./user";
