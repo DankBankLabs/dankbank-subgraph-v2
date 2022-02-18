@@ -1,8 +1,16 @@
 {
   "arrowParens": "avoid",
-  "bracketSpacing": false,
+  "bracketSpacing": true,
   "endOfLine": "auto",
   "printWidth": 120,
   "singleQuote": false,
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "overrides": [
+    {
+      "files": "*.yaml",
+      "options": {
+        "bracketSpacing": false
+      }
+    }
+  ]
 }
