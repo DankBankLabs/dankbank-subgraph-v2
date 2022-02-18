@@ -17,268 +17,268 @@ dataSources:
         - Transfer
       abis:
         - name: ERC20
-          file: ../../packages/abi/ERC20.json
+          file: ./abis/ERC20.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
       file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: HideYoKids
-    network: "{{network}}"
-    source:
-      address: "{{HideYoKids}}"
-      abi: ERC20
-      startBlock: {{HideYoKidsStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: Panda
-    network: "{{network}}"
-    source:
-      address: "{{Panda}}"
-      abi: ERC20
-      startBlock: {{PandaStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: HiOkay
-    network: "{{network}}"
-    source:
-      address: "{{HiOkay}}"
-      abi: ERC20
-      startBlock: {{HiOkayStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: 2PBF
-    network: "{{network}}"
-    source:
-      address: "{{2PBF}}"
-      abi: ERC20
-      startBlock: {{2PBFStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: HoneyBadger
-    network: "{{network}}"
-    source:
-      address: "{{HoneyBadger}}"
-      abi: ERC20
-      startBlock: {{HoneyBadgerStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: Ermagherd
-    network: "{{network}}"
-    source:
-      address: "{{Ermagherd}}"
-      abi: ERC20
-      startBlock: {{ErmagherdStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: FeelsPepe
-    network: "{{network}}"
-    source:
-      address: "{{FeelsPepe}}"
-      abi: ERC20
-      startBlock: {{FeelsPepeStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: Croissant
-    network: "{{network}}"
-    source:
-      address: "{{Croissant}}"
-      abi: ERC20
-      startBlock: {{CroissantStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: EvolutionOfDance
-    network: "{{network}}"
-    source:
-      address: "{{EvolutionOfDance}}"
-      abi: ERC20
-      startBlock: {{EvolutionOfDanceStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: Chickens
-    network: "{{network}}"
-    source:
-      address: "{{Chickens}}"
-      abi: ERC20
-      startBlock: {{ChickensStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: BadLuckBrian
-    network: "{{network}}"
-    source:
-      address: "{{BadLuckBrian}}"
-      abi: ERC20
-      startBlock: {{BadLuckBrianStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: TipsFedora
-    network: "{{network}}"
-    source:
-      address: "{{TipsFedora}}"
-      abi: ERC20
-      startBlock: {{TipsFedoraStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
-  - kind: ethereum/contract
-    name: SuccessKid
-    network: "{{network}}"
-    source:
-      address: "{{SuccessKid}}"
-      abi: ERC20
-      startBlock: {{SuccessKidStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC20
-          file: ../../packages/abi/ERC20.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: HideYoKids
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{HideYoKids}}"
+  #     abi: ERC20
+  #     startBlock: {{HideYoKidsStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: Panda
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{Panda}}"
+  #     abi: ERC20
+  #     startBlock: {{PandaStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: HiOkay
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{HiOkay}}"
+  #     abi: ERC20
+  #     startBlock: {{HiOkayStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: 2PBF
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{2PBF}}"
+  #     abi: ERC20
+  #     startBlock: {{2PBFStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: HoneyBadger
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{HoneyBadger}}"
+  #     abi: ERC20
+  #     startBlock: {{HoneyBadgerStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: Ermagherd
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{Ermagherd}}"
+  #     abi: ERC20
+  #     startBlock: {{ErmagherdStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: FeelsPepe
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{FeelsPepe}}"
+  #     abi: ERC20
+  #     startBlock: {{FeelsPepeStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: Croissant
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{Croissant}}"
+  #     abi: ERC20
+  #     startBlock: {{CroissantStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: EvolutionOfDance
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{EvolutionOfDance}}"
+  #     abi: ERC20
+  #     startBlock: {{EvolutionOfDanceStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: Chickens
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{Chickens}}"
+  #     abi: ERC20
+  #     startBlock: {{ChickensStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: BadLuckBrian
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{BadLuckBrian}}"
+  #     abi: ERC20
+  #     startBlock: {{BadLuckBrianStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: TipsFedora
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{TipsFedora}}"
+  #     abi: ERC20
+  #     startBlock: {{TipsFedoraStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
+  # - kind: ethereum/contract
+  #   name: SuccessKid
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{SuccessKid}}"
+  #     abi: ERC20
+  #     startBlock: {{SuccessKidStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Transfer
+  #     abis:
+  #       - name: ERC20
+  #         file: ../../packages/abi/ERC20.json
+  #     eventHandlers:
+  #       - event: Transfer(indexed address,indexed address,uint256)
+  #         handler: handleTransfer
+  #     file: ./src/erc20Mapping.ts
