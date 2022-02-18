@@ -5,7 +5,6 @@ import { TokenBalance } from "../generated/schema";
 import { log } from "@graphprotocol/graph-ts";
 
 export function handleTransfer(event: Transfer): void {
-  log.error("handleTransfer {}", [event.address.toHexString()]);
   const tokenAddress = event.address.toHexString();
   const value = event.params.value;
 
