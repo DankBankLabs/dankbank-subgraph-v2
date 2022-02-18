@@ -8,7 +8,7 @@ dataSources:
     source:
       address: "{{10GuyERC20}}"
       abi: ERC20
-      startBlock: { { 10GuyERC20 } }
+      startBlock: {{10GuyERC20StartBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

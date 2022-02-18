@@ -2,7 +2,7 @@ import { bigZero } from "../../utils/constants";
 import { AddressZero } from "../../utils/constants";
 
 function getTokenBalance(tokenAddress: string, user: string): TokenBalance {
-  let balanceId = tokenAddress + user;
+  const balanceId = tokenAddress + user;
   let tokenBalance = TokenBalance.load(balanceId);
   if (tokenBalance == null) {
     tokenBalance = new TokenBalance(balanceId);
