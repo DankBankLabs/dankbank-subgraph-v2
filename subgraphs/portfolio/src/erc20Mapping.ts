@@ -2,7 +2,6 @@ import { AddressZero, bigZero } from "./utils/constants";
 import { ensureAccountCreated } from "./utils/accounts";
 import { Transfer } from "../generated/10Guy/ERC20";
 import { TokenBalance } from "../generated/schema";
-import { log } from "@graphprotocol/graph-ts";
 
 export function handleTransfer(event: Transfer): void {
   const tokenAddress = event.address.toHexString();
