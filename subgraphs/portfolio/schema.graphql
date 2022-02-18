@@ -1,0 +1,16 @@
+type Account @entity {
+  "User address"
+  id: ID!
+  "token positions"
+  tokenBalances: [TokenBalance!] @derivedFrom(field: "user")
+}
+
+type TokenBalance @entity {
+  id: ID!
+  "Token Address"
+  token: String!
+  "Address which holds this position"
+  user: Account!
+  "The amount of the token the user holds"
+  balance: BigInt!
+}
