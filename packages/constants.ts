@@ -6,7 +6,7 @@ export const weiPerEth = BigInt.fromI32(10).pow(18);
 
 export const AddressZero = "0x0000000000000000000000000000000000000000";
 
-export let whiteListedTokenVaults = new TypedMap<string, boolean>();
+export const whiteListedTokenVaults = new TypedMap<string, boolean>();
 
 // 10Guy
 whiteListedTokenVaults.set("0x9550a643148501eeb5c00e7e74739c2aae953373", true);
@@ -74,15 +74,9 @@ class NamedObject {
 export class TransactionType extends NamedObject {
   static readonly BUY: TransactionType = new TransactionType("BUY");
   static readonly SELL: TransactionType = new TransactionType("SELL");
-  static readonly ADD_LIQUIDITY: TransactionType = new TransactionType(
-    "ADD_LIQUIDITY"
-  );
-  static readonly REMOVE_LIQUIDITY: TransactionType = new TransactionType(
-    "REMOVE_LIQUIDITY"
-  );
-  static readonly COMMIT_TO_AUCTION: TransactionType = new TransactionType(
-    "COMMIT_TO_AUCTION"
-  );
+  static readonly ADD_LIQUIDITY: TransactionType = new TransactionType("ADD_LIQUIDITY");
+  static readonly REMOVE_LIQUIDITY: TransactionType = new TransactionType("REMOVE_LIQUIDITY");
+  static readonly COMMIT_TO_AUCTION: TransactionType = new TransactionType("COMMIT_TO_AUCTION");
 }
 
 export class AuctionState extends NamedObject {

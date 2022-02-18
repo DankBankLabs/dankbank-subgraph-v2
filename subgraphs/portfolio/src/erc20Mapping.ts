@@ -1,6 +1,6 @@
 import { AddressZero, bigZero } from "./utils/constants";
 import { ensureAccountCreated } from "./utils/accounts";
-import { Transfer } from "../generated/10GuyERC20/ERC20";
+import { Transfer } from "../generated/10Guy/ERC20";
 import { TokenBalance } from "../generated/schema";
 
 export function handleTransfer(event: Transfer): void {
