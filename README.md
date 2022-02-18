@@ -1,6 +1,9 @@
-# Dank Bank Market Subgraph
+# Dank Bank Market Subgraph v2
 
-This subgraph dynamically tracks events emitted from the Dank Bank Market smart contract.
+This subgraph dynamically tracks events emitted from the Dank Bank Market smart contract and Meme ERC20 contracts.
+
+## Subgraphs
+Portfolio: https://thegraph.com/hosted-service/subgraph/dankbanklabs/portfolio-v1
 
 ## Unit Testing
 
