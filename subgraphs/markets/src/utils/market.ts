@@ -22,12 +22,12 @@ export function updateTokenPrice(
     ? ethAndVirtualPoolSupply.times(weiPerEth).div(tokenPoolSupply)
     : bigZero;
 
-  liquidityPool.tokenPrice = tokenPrice;
+  liquidityPool.memeTokenPrice = tokenPrice;
 }
 
 export function updateTokenValuation(liquidityPool: LiquidityPool): void {
   let tokenVault = getTokenVault(liquidityPool.token);
-  liquidityPool.tokenValuation = liquidityPool.tokenPrice.times(
+  liquidityPool.memeValuation = liquidityPool.tokenPrice.times(
     tokenVault.totalSupply.div(weiPerEth)
   );
 }
@@ -42,13 +42,17 @@ export function getLiquidityPool(
   if (pool == null) {
     pool = new LiquidityPool(lpId);
     pool.token = tokenAddress;
-    pool.ethPoolSupply = bigZero;
-    pool.virtualEthPoolSupply = bigZero;
+    pool.tokenPoolSupply = bigZero;
+    pool.virtualTokenPoolSupply = bigZero;
     pool.totalVolume = bigZero;
     pool.lpTokenSupply = bigZero;
-    pool.tokenPrice = bigZero;
-    pool.tokenValuation = bigZero;
+    pool.memeTokenPrice = bigZero;
+    pool.memeValuation = bigZero;
+    pool.memeTotalSupply = bigZero;
+    pool.memeMarketSupply = bigZero;
     pool.createdAt = timestamp;
+    pool.symbol = "";
+    pool.name = "";
   }
 
   return pool;
@@ -62,10 +66,8 @@ export function getLpTokenBalance(
 
   let balance = LpTokenBalance.load(balanceId);
   if (balance == null) {
-    ensureUserCreated(userAddress);
     balance = new LpTokenBalance(balanceId);
     balance.liquidityPool = tokenAddress;
-    balance.user = userAddress;
     balance.balance = bigZero;
   }
 

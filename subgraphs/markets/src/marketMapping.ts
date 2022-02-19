@@ -1,31 +1,29 @@
 import { Address, log } from "@graphprotocol/graph-ts";
 import {
   DankBankMarket,
-  ApprovalForAll,
+  TokenVault,
   DankBankBuy,
   DankBankSell,
   LiquidityAdded,
   LiquidityRemoved,
-  TransferBatch,
-  TransferSingle,
-  URI,
 } from "../generated/DankBankMarket/DankBankMarket";
-import { TransactionType } from "./utils/constants";
+import { bigZero } from "./utils/constants";
 import {
   getLiquidityPool,
   getLpTokenBalance,
   updateTokenPrice,
   updateTokenValuation,
 } from "./utils/market";
-import { createTransaction } from "./utils/transaction";
-import { isExistingVault } from "./utils/vault";
+import { isExistingLiquidityPool } from "./utils/vault";
 
+// TODO: use math instead of onchain queries to calculate the tokenPoolSupply, memeMarketSupply.
+// TODO: reconsider renaming tokenPoolSupply / memeMarketSupply, because market supply is really
+// just the token2PoolSupply and that is more clear imo.
 export function handleDankBankBuy(event: DankBankBuy): void {
   let tokenAddress = event.params.token;
   let marketAddress = event.address;
 
-  // subgraph only supports fractionalized tokens for now
-  if (!isExistingVault(tokenAddress.toHexString())) {
+  if (!isExistingLiquidityPool(tokenAddress.toHexString())) {
     return;
   }
 
@@ -35,32 +33,23 @@ export function handleDankBankBuy(event: DankBankBuy): void {
   );
 
   let market = DankBankMarket.bind(marketAddress);
-  pool.ethPoolSupply = market.ethPoolSupply(tokenAddress);
-
+  pool.tokenPoolSupply = market.ethPoolSupply(tokenAddress);
   pool.totalVolume = pool.totalVolume.plus(event.params.investmentAmount);
+
+  let tokenVault = TokenVault.bind(tokenAddress);
+  pool.memeMarketSupply = tokenVault.balanceOf(marketAddress);
 
   updateTokenPrice(pool, tokenAddress, marketAddress);
   updateTokenValuation(pool);
 
   pool.save();
-
-  createTransaction(
-    event.transaction.hash.toHex(),
-    event.params.buyer.toHexString(),
-    tokenAddress.toHexString(),
-    event.params.investmentAmount,
-    [event.params.tokensBought],
-    TransactionType.BUY,
-    event.block.timestamp
-  ).save();
 }
 
 export function handleDankBankSell(event: DankBankSell): void {
   let tokenAddress = event.params.token;
   let marketAddress = event.address;
 
-  // subgraph only supports fractionalized tokens for now
-  if (!isExistingVault(tokenAddress.toHexString())) {
+  if (!isExistingLiquidityPool(tokenAddress.toHexString())) {
     return;
   }
 
@@ -70,44 +59,38 @@ export function handleDankBankSell(event: DankBankSell): void {
   );
 
   let market = DankBankMarket.bind(marketAddress);
-  pool.ethPoolSupply = market.ethPoolSupply(tokenAddress);
-
+  pool.tokenPoolSupply = market.ethPoolSupply(tokenAddress);
   pool.totalVolume = pool.totalVolume.minus(event.params.returnAmount);
+
+  let tokenVault = TokenVault.bind(tokenAddress);
+  pool.memeMarketSupply = tokenVault.balanceOf(marketAddress);
 
   updateTokenPrice(pool, tokenAddress, marketAddress);
   updateTokenValuation(pool);
 
   pool.save();
-
-  createTransaction(
-    event.transaction.hash.toHex(),
-    event.params.seller.toHexString(),
-    tokenAddress.toHexString(),
-    event.params.tokensSold,
-    [event.params.returnAmount],
-    TransactionType.SELL,
-    event.block.timestamp
-  ).save();
 }
 
 export function handleLiquidityAdded(event: LiquidityAdded): void {
   let tokenAddress = event.params.token;
-  let marketAddress = event.address.toHexString();
-
-  // subgraph only supports fractionalized tokens for now
-  if (!isExistingVault(tokenAddress.toHexString())) {
-    return;
-  }
+  let marketAddress = Address.fromString(event.address.toHexString());
 
   let pool = getLiquidityPool(
     tokenAddress.toHexString(),
     event.block.timestamp
   );
+  
+  let tokenVault = TokenVault.bind(tokenAddress);
+  if (pool.memeMarketSupply === bigZero) {
+    pool.memeTotalSupply = tokenVault.totalSupply();
+    pool.name = tokenVault.name();
+    pool.symbol = tokenVault.symbol();
+  }
+  pool.memeMarketSupply = tokenVault.balanceOf(marketAddress);
 
-  let market = DankBankMarket.bind(Address.fromString(marketAddress));
-  pool.virtualEthPoolSupply = market.virtualEthPoolSupply(tokenAddress);
-  pool.ethPoolSupply = market.ethPoolSupply(tokenAddress);
-
+  let market = DankBankMarket.bind(marketAddress);
+  pool.virtualTokenPoolSupply = market.virtualEthPoolSupply(tokenAddress);
+  pool.tokenPoolSupply = market.ethPoolSupply(tokenAddress);
   pool.lpTokenSupply = market.lpTokenSupply(market.getTokenId(tokenAddress));
 
   updateTokenPrice(pool, tokenAddress, event.address);
@@ -124,24 +107,13 @@ export function handleLiquidityAdded(event: LiquidityAdded): void {
 
   lpTokenBalance.save();
   pool.save();
-
-  createTransaction(
-    event.transaction.hash.toHex(),
-    event.params.funder.toHexString(),
-    tokenAddress.toHexString(),
-    event.params.amountAdded,
-    [event.params.sharesMinted],
-    TransactionType.ADD_LIQUIDITY,
-    event.block.timestamp
-  ).save();
 }
 
 export function handleLiquidityRemoved(event: LiquidityRemoved): void {
   let tokenAddress = event.params.token;
   let marketAddress = event.address;
 
-  // subgraph only supports fractionalized tokens for now
-  if (!isExistingVault(tokenAddress.toHexString())) {
+  if (!isExistingLiquidityPool(tokenAddress.toHexString())) {
     return;
   }
 
@@ -150,9 +122,12 @@ export function handleLiquidityRemoved(event: LiquidityRemoved): void {
     event.block.timestamp
   );
 
+  let tokenVault = TokenVault.bind(tokenAddress);
+  pool.memeMarketSupply = tokenVault.balanceOf(marketAddress);
+
   let market = DankBankMarket.bind(marketAddress);
-  pool.virtualEthPoolSupply = market.virtualEthPoolSupply(tokenAddress);
-  pool.ethPoolSupply = market.ethPoolSupply(tokenAddress);
+  pool.virtualTokenPoolSupply = market.virtualEthPoolSupply(tokenAddress);
+  pool.tokenPoolSupply = market.ethPoolSupply(tokenAddress);
   pool.lpTokenSupply = market.lpTokenSupply(market.getTokenId(tokenAddress));
 
   let userAddress = event.params.funder.toHexString();
@@ -169,22 +144,4 @@ export function handleLiquidityRemoved(event: LiquidityRemoved): void {
 
   lpTokenBalance.save();
   pool.save();
-
-  createTransaction(
-    event.transaction.hash.toHex(),
-    event.params.funder.toHexString(),
-    tokenAddress.toHexString(),
-    event.params.sharesBurnt,
-    [event.params.tokensRemoved, event.params.ethRemoved],
-    TransactionType.REMOVE_LIQUIDITY,
-    event.block.timestamp
-  ).save();
 }
-
-export function handleTransferBatch(event: TransferBatch): void {}
-
-export function handleTransferSingle(event: TransferSingle): void {}
-
-export function handleURI(event: URI): void {}
-
-export function handleApprovalForAll(event: ApprovalForAll): void {}

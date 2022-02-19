@@ -1,120 +1,40 @@
-type Account @entity {
-  "User address"
+# Liquidity pool contains all the information necessary to run the markets
+type LiquidityPool @entity {
+  "token vault address"
   id: ID!
-  "liqudity token balances"
-  liquidityTokenBalances: [LpTokenBalance!] @derivedFrom(field: "user")
-  "token positions"
-  tokenBalances: [TokenBalance!] @derivedFrom(field: "user")
-}
-
-type TokenBalance @entity {
-  id: ID!
-  "token"
-  token: TokenVault!
-  "Address which holds this position"
-  user: Account!
-  "The amount of the token the user holds"
-  balance: BigInt!
-}
-
-enum AuctionState {
-  inactive
-  live
-  ended
-  redeemed
-}
-
-type TokenVault @entity {
-  "address"
-  id: ID!
-  "token positions"
-  tokenPositions: [TokenBalance!] @derivedFrom(field: "token")
-  "erc721 token"
-  erc721: ERC721Token
-  "liquidity pool"
-  liquidityPool: LiquidityPool @derivedFrom(field: "token")
-  "total supply"
-  totalSupply: BigInt!
+  "token pool"
+  tokenPoolSupply: BigInt!
+  "virtual token pool"
+  virtualTokenPoolSupply: BigInt!
+  "liquidity pool token balances"
+  lpTokenBalances: [LpTokenBalance!] @derivedFrom(field: "liquidityPool")
+  "total supply of liquidity pool tokens"
+  lpTokenSupply: BigInt!
+  "total trading volume on the market"
+  totalVolume: BigInt!
+  "token price relative to tokenPoolSupply"
+  memeTokenPrice: BigInt!
+  "The amount of fractionalized (meme) tokens"
+  memeTotalSupply: BigInt!
+  "The amount of fractionalized (meme) tokens the markets own"
+  memeMarketSupply: BigInt!
+  "valuation of meme"
+  memeValuation: BigInt!
   "symbol"
   symbol: String!
   "name"
   name: String!
-  "decimals"
-  decimals: BigInt!
-  "address that initially deposited the NFT"
-  curator: Account
-  "fee paid to curator yearly"
-  fee: BigInt
-  "the state of the auction"
-  auctionState: AuctionState
-  "the ETH required to start an auction for the NFT"
-  reservePrice: BigInt
-  "current price of the token during an auction"
-  livePrice: BigInt
-  "the account winning the auction"
-  winningAccount: Account
-}
-
-type ERC721Token @entity {
-  id: ID!
-  "address"
-  address: String!
-  "tokenId"
-  tokenId: BigInt!
-  "tokenVault"
-  tokenVault: TokenVault @derivedFrom(field: "erc721")
-  "uri"
-  uri: String
-}
-
-# TokenBalance should be the single source of truth on the LiquidityPool token balance
-type LiquidityPool @entity {
-  id: ID!
-  "token"
-  token: TokenVault!
-  "eth pool"
-  ethPoolSupply: BigInt!
-  "virtual Eth pool"
-  virtualEthPoolSupply: BigInt!
-  "lp token balances"
-  lpTokenBalances: [LpTokenBalance!] @derivedFrom(field: "liquidityPool")
-  "total trading volume on the market"
-  totalVolume: BigInt!
-  "total supply of liquidity pool tokens"
-  lpTokenSupply: BigInt!
-  "token price in eth"
-  tokenPrice: BigInt!
-  "valuation of meme"
-  tokenValuation: BigInt!
   "liquidity pool creation block timestamp"
   createdAt: BigInt!
 }
 
 type LpTokenBalance @entity {
+  "liquidityPool + userAddress"
   id: ID!
   "liquidity pool"
   liquidityPool: LiquidityPool!
-  "Address which holds this position"
-  user: Account!
   "The amount of the token the user holds"
   balance: BigInt!
-}
-
-type Transaction @entity {
-  "hash of the transaction"
-  id: ID!
-  "token amount into the AMM"
-  inAmount: BigInt!
-  "token amount(s) out of the AMM"
-  outAmount: [BigInt!]
-  "user who performed the transaction"
-  user: Account!
-  "token vault associated with the transaction"
-  token: TokenVault!
-  "type of the transaction"
-  transactionType: TransactionType
-  "timestamp"
-  timestamp: BigInt!
 }
 
 enum TransactionType {
@@ -128,6 +48,7 @@ enum TransactionType {
 type MisoMarket @entity {
   "Address of the MISOMarket contract"
   id: ID!
+  "Amount of auctions created by this market factory"
   numberOfAuctions: BigInt!
   auctions: [Auction!] @derivedFrom(field: "market")
 }
@@ -135,13 +56,18 @@ type MisoMarket @entity {
 type Auction @entity {
   "Address of the auction (BatchAuction contract)"
   id: ID!
+  "Auction start time in unix seconds"
   startTime: BigInt!
+  "Auction end time in unix seconds"
   endTime: BigInt!
-  "referred to as `totalTokens` in the contract"
+  "Amount of tokens being auctioned"
   tokensForAuction: BigInt!
+  "The minimum amount needed to be commited"
   minimumCommitmentAmount: BigInt!
+  "Finsh the auction after end date"
   finalized: Boolean!
   "total number of tokens that have been committed"
   commitmentsTotal: BigInt!
+  "Market factory"
   market: MisoMarket!
 }
