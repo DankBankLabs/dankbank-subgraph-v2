@@ -47,8 +47,6 @@ type TokenVault @entity {
   fee: BigInt
   "the state of the auction"
   auctionState: AuctionState
-  "the ETH required to start an auction for the NFT"
-  reservePrice: BigInt
   "current price of the token during an auction"
   livePrice: BigInt
   "the account winning the auction"

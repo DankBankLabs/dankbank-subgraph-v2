@@ -132,7 +132,6 @@ templates:
         - Won
         - Bid
         - Redeem
-        - PriceUpdate
       abis:
         - name: ERC721TokenVault
           file: ./abis/ERC721TokenVault.json
@@ -145,8 +144,6 @@ templates:
           handler: handleBid
         - event: Redeem(indexed address)
           handler: handleRedeem
-        - event: PriceUpdate(indexed address,uint256)
-          handler: handlePriceUpdate
         {{#isMainnet}}
       callHandlers:
         - function: initialize(address,address,uint256,uint256,uint256,uint256,string memory,string memory)

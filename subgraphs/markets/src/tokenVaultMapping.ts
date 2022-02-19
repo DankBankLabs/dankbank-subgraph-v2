@@ -61,14 +61,6 @@ export function handleBid(event: Bid): void {
   tokenVault.save();
 }
 
-export function handlePriceUpdate(event: PriceUpdate): void {
-  // update reserve price
-  let tokenVault = getTokenVault(event.address.toHexString());
-  let tokenVaultContract = ERC721TokenVault.bind(event.address);
-  tokenVault.reservePrice = tokenVaultContract.reservePrice();
-  tokenVault.save();
-}
-
 export function handleInitialize(call: InitializeCall): void {
   let tokenVault = getTokenVault(call.from.toHexString());
 
