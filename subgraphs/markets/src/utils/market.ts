@@ -73,3 +73,20 @@ export function getLpTokenBalance(
 
   return balance;
 }
+
+type ScaledPools = {
+  scaledPool0: BigInt,
+  scaledPool1: BigInt
+}
+
+// TODO finish this logic
+export function calculateScaledPools(
+  pool0: BigInt,
+  pool1: BigInt,
+): ScaledPools {
+  return {
+    scaledPool0: pool0,
+    scaledPool1: pool1,
+  };
+}
+

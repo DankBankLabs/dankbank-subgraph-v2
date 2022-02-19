@@ -9,6 +9,7 @@ import {
 } from "../generated/DankBankMarket/DankBankMarket";
 import { bigZero } from "./utils/constants";
 import {
+  calculateScaledPools,
   getLiquidityPool,
   getLpTokenBalance,
   updateTokenPrice,
@@ -16,11 +17,9 @@ import {
 } from "./utils/market";
 import { isExistingLiquidityPool } from "./utils/vault";
 
-// TODO: use math instead of onchain queries to calculate the tokenPoolSupply, memeMarketSupply.
-// TODO: reconsider renaming tokenPoolSupply / memeMarketSupply, because market supply is really
-// just the token2PoolSupply and that is more clear imo.
+// TODO: Include math for LP fees
 export function handleDankBankBuy(event: DankBankBuy): void {
-  let tokenAddress = event.params.token;
+  let { token: tokenAddress, tokensBought, investmentAmount } = event.params;
   let marketAddress = event.address;
 
   if (!isExistingLiquidityPool(tokenAddress.toHexString())) {
@@ -32,12 +31,20 @@ export function handleDankBankBuy(event: DankBankBuy): void {
     event.block.timestamp
   );
 
-  let market = DankBankMarket.bind(marketAddress);
-  pool.tokenPoolSupply = market.ethPoolSupply(tokenAddress);
-  pool.totalVolume = pool.totalVolume.plus(event.params.investmentAmount);
+  const { 
+    scaledPool0: newMemeMarketSupply,
+    scaledPool1: newTokenPoolSupply
+  } = calculateScaledPools(
+    pool.memeMarketSupply.minus(tokensBought),
+    pool.tokenPoolSupply.plus(investmentAmount)
+  );
+  
+  pool.memeMarketSupply = newMemeMarketSupply;
+  pool.tokenPoolSupply = newTokenPoolSupply;
+  pool.totalVolume = pool.totalVolume.plus(investmentAmount);
 
   let tokenVault = TokenVault.bind(tokenAddress);
-  pool.memeMarketSupply = tokenVault.balanceOf(marketAddress);
+  tokenVault.balanceOf(marketAddress);
 
   updateTokenPrice(pool, tokenAddress, marketAddress);
   updateTokenValuation(pool);
@@ -46,7 +53,7 @@ export function handleDankBankBuy(event: DankBankBuy): void {
 }
 
 export function handleDankBankSell(event: DankBankSell): void {
-  let tokenAddress = event.params.token;
+  let { token: tokenAddress, tokensSold, returnAmount } = event.params.token;
   let marketAddress = event.address;
 
   if (!isExistingLiquidityPool(tokenAddress.toHexString())) {
@@ -58,12 +65,17 @@ export function handleDankBankSell(event: DankBankSell): void {
     event.block.timestamp
   );
 
-  let market = DankBankMarket.bind(marketAddress);
-  pool.tokenPoolSupply = market.ethPoolSupply(tokenAddress);
-  pool.totalVolume = pool.totalVolume.minus(event.params.returnAmount);
+  const { 
+    scaledPool0: newMemeMarketSupply,
+    scaledPool1: newTokenPoolSupply
+  } = calculateScaledPools(
+    pool.memeMarketSupply.plus(tokensSold),
+    pool.tokenPoolSupply.sub(returnAmount)
+  );
 
-  let tokenVault = TokenVault.bind(tokenAddress);
-  pool.memeMarketSupply = tokenVault.balanceOf(marketAddress);
+  pool.memeMarketSupply = newMemeMarketSupply;
+  pool.tokenPoolSupply = newTokenPoolSupply;
+  pool.totalVolume = pool.totalVolume.minus(event.params.returnAmount);
 
   updateTokenPrice(pool, tokenAddress, marketAddress);
   updateTokenValuation(pool);
@@ -81,7 +93,7 @@ export function handleLiquidityAdded(event: LiquidityAdded): void {
   );
   
   let tokenVault = TokenVault.bind(tokenAddress);
-  if (pool.memeMarketSupply === bigZero) {
+  if (bigZero.equals(pool.memeMarketSupply)) {
     pool.memeTotalSupply = tokenVault.totalSupply();
     pool.name = tokenVault.name();
     pool.symbol = tokenVault.symbol();
