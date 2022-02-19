@@ -1,6 +1,6 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 
-import { TokenVault } from "../../generated/schema";
+import { LiquidityPool, TokenVault } from "../../generated/schema";
 import { ERC721TokenVault } from "../../generated/templates/ERC721TokenVault/ERC721TokenVault";
 import { bigZero } from "../../../../packages/constants";
 
@@ -27,8 +27,8 @@ export function getTokenVault(address: string): TokenVault {
   return vault as TokenVault;
 }
 
-export function isExistingVault(address: string): boolean {
-  let vault = TokenVault.load(address);
+export function isExistingLiquidityPool(address: string): boolean {
+  const lp = LiquidityPool.load(address);
 
-  return vault != null;
+  return lp != null;
 }

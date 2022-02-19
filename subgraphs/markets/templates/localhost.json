@@ -2,8 +2,6 @@
     "network": "localhost",
     "market": "0xd9F9304329451Dd31908BC61C0F87e2AA90aacD6",
     "marketStartBlock": 0,
-    "vaultFactory": "0xee85d401835561De62b874147Eca8A4Fe1D5cBFf",
-    "vaultFactoryStartBlock": 0,
     "misoMarket": "0x3F3a810E37a0b56eB37860C43997867F5351c58a",
     "misoMarketStartBlock": 0
 }
