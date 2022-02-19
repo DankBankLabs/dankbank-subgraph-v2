@@ -4,11 +4,7 @@ import { ERC721Token } from "../generated/schema";
 import { ERC721TokenVault } from "../generated/templates";
 import { ERC721MetaData } from "../generated/templates/ERC721MetaData/ERC721MetaData";
 import { ERC721TokenVault as ERC721TokenVault_Contract } from "../generated/templates/ERC721TokenVault/ERC721TokenVault";
-import {
-  AuctionState,
-  bigZero,
-  whiteListedTokenVaults,
-} from "./utils/constants";
+import { AuctionState, bigZero, whiteListedTokenVaults } from "./utils/constants";
 import { getTokenVault } from "./utils/vault";
 
 let AuctionStates: string[] = [
@@ -21,10 +17,7 @@ let AuctionStates: string[] = [
 export function handleMint(event: Mint): void {
   let vaultAddress = event.params.vault;
   // Only create tokenVault entities that we will index moving forward if whitelisted
-  if (
-    dataSource.network() == "mainnet" &&
-    !whiteListedTokenVaults.isSet(vaultAddress.toHexString().toLowerCase())
-  )
+  if (dataSource.network() == "mainnet" && !whiteListedTokenVaults.isSet(vaultAddress.toHexString().toLowerCase()))
     return;
 
   let tokenVault = getTokenVault(vaultAddress.toHexString());
@@ -34,7 +27,6 @@ export function handleMint(event: Mint): void {
   let erc721Id = nftAddress + nftId.toString();
 
   tokenVault.erc721 = erc721Id;
-  tokenVault.totalSupply = bigZero;
 
   // set initialized values
   let tokenVaultContract = ERC721TokenVault_Contract.bind(vaultAddress);

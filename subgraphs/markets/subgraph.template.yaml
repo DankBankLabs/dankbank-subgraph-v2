@@ -128,13 +128,15 @@ templates:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - Transfer
+        - Start
+        - Won
+        - Bid
+        - Redeem
+        - PriceUpdate
       abis:
         - name: ERC721TokenVault
           file: ./abis/ERC721TokenVault.json
       eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
         - event: Start(indexed address,uint256)
           handler: handleStart
         - event: Won(indexed address,uint256)
