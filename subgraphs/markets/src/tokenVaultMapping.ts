@@ -6,75 +6,13 @@ import {
   PriceUpdate,
   Redeem,
   Start,
-  Transfer,
   UpdateCuratorCall,
   UpdateFeeCall,
   Won,
 } from "../generated/templates/ERC721TokenVault/ERC721TokenVault";
-import { TokenBalance } from "../generated/schema";
-import { bigZero, AddressZero, AuctionState } from "./utils/constants";
+import { bigZero, AuctionState } from "./utils/constants";
 import { getTokenVault } from "./utils/vault";
 import { ensureUserCreated } from "./utils/user";
-import { log } from "@graphprotocol/graph-ts";
-
-function getTokenBalance(tokenAddress: string, user: string): TokenBalance {
-  let balanceId = tokenAddress + user;
-  let tokenBalance = TokenBalance.load(balanceId);
-  if (tokenBalance == null) {
-    tokenBalance = new TokenBalance(balanceId);
-    tokenBalance.token = tokenAddress;
-    tokenBalance.user = user;
-    tokenBalance.balance = bigZero;
-  }
-
-  return tokenBalance as TokenBalance;
-}
-
-export function handleTransfer(event: Transfer): void {
-  let tokenAddress = event.address.toHexString();
-  let value = event.params.value;
-
-  let tokenVault = getTokenVault(tokenAddress);
-
-  // add value to to
-  let toAddress = event.params.to.toHexString();
-
-  // when burning a token the to Address is the 0 address in the event
-  if (toAddress != AddressZero) {
-    ensureUserCreated(toAddress);
-
-    let toBalance = getTokenBalance(tokenAddress, toAddress);
-
-    toBalance.balance = toBalance.balance.plus(value);
-
-    toBalance.save();
-  } else {
-    // tokens were burned
-    tokenVault.totalSupply = tokenVault.totalSupply.minus(value);
-  }
-
-  let fromAddress = event.params.from.toHexString();
-
-  // when minting a token the from address is the 0 address in the event
-  if (fromAddress != AddressZero) {
-    ensureUserCreated(fromAddress);
-
-    let fromBalance = getTokenBalance(tokenAddress, fromAddress);
-
-    fromBalance.balance = fromBalance.balance.minus(value);
-
-    fromBalance.save();
-  } else {
-    // the tokens were minted if they were from the 0 address
-    tokenVault.totalSupply = tokenVault.totalSupply.plus(value);
-  }
-
-  // update reserve price
-  let tokenVaultContract = ERC721TokenVault.bind(event.address);
-  tokenVault.reservePrice = tokenVaultContract.reservePrice();
-
-  tokenVault.save();
-}
 
 export function handleStart(event: Start): void {
   let tokenVault = getTokenVault(event.address.toHexString());
@@ -101,6 +39,11 @@ export function handleWon(event: Won): void {
 export function handleRedeem(event: Redeem): void {
   // update auction state to 'redeemed'
   let tokenVault = getTokenVault(event.address.toHexString());
+
+  // When the NFT is redeemed the total supply of tokens is burned
+  // This is the only way tokens can be burned since _transfer in ERC20 checks to make sure you
+  // Do not send tokens to the zero address
+  tokenVault.totalSupply = bigZero;
   tokenVault.auctionState = AuctionState.redeemed.toString();
   tokenVault.save();
 }
@@ -115,14 +58,6 @@ export function handleBid(event: Bid): void {
   ensureUserCreated(buyerAddress);
   tokenVault.winningAccount = buyerAddress;
 
-  tokenVault.save();
-}
-
-export function handlePriceUpdate(event: PriceUpdate): void {
-  // update reserve price
-  let tokenVault = getTokenVault(event.address.toHexString());
-  let tokenVaultContract = ERC721TokenVault.bind(event.address);
-  tokenVault.reservePrice = tokenVaultContract.reservePrice();
   tokenVault.save();
 }
 
@@ -161,9 +96,7 @@ export function handleUpdateCurator(call: UpdateCuratorCall): void {
 
 export function handleUpdateFee(call: UpdateFeeCall): void {
   // update fee
-  log.info(`UpdateFeeCall: ${call.from.toHexString()}`, []);
   let tokenVault = getTokenVault(call.from.toHexString());
-  log.info(`UpdateFeeCall -> tokenVault: ${tokenVault.id}`, []);
 
   tokenVault.fee = call.inputs._fee;
   tokenVault.save();

@@ -1,20 +1,15 @@
 import { ByteArray, Address, BigInt } from "@graphprotocol/graph-ts";
 
 import { LiquidityPool, LpTokenBalance } from "../../generated/schema";
-import { bigZero, weiPerEth } from "../../../../packages/constants";
+import { bigZero, weiPerEth } from "./constants";
 import { ERC721TokenVault } from "../../generated/templates/ERC721TokenVault/ERC721TokenVault";
 import { DankBankMarket } from "../../generated/DankBankMarket/DankBankMarket";
 import { ensureUserCreated } from "./user";
 import { getTokenVault } from "./vault";
 
-export function updateTokenPrice(
-  liquidityPool: LiquidityPool,
-  tokenAddress: Address,
-  marketAddress: Address
-): void {
+export function updateTokenPrice(liquidityPool: LiquidityPool, tokenAddress: Address, marketAddress: Address): void {
   let marketContract = DankBankMarket.bind(marketAddress);
-  let ethAndVirtualPoolSupply =
-    marketContract.getTotalEthPoolSupply(tokenAddress);
+  let ethAndVirtualPoolSupply = marketContract.getTotalEthPoolSupply(tokenAddress);
 
   let tokenContract = ERC721TokenVault.bind(tokenAddress);
   let tokenPoolSupply = tokenContract.balanceOf(marketAddress);
@@ -28,14 +23,12 @@ export function updateTokenPrice(
 export function updateTokenValuation(liquidityPool: LiquidityPool): void {
   let tokenVault = getTokenVault(liquidityPool.token);
   liquidityPool.tokenValuation = liquidityPool.tokenPrice.times(
-    tokenVault.totalSupply.div(weiPerEth)
+    // To-Do: Need to make direct call to
+    tokenVault.totalSupply.div(weiPerEth),
   );
 }
 
-export function getLiquidityPool(
-  tokenAddress: string,
-  timestamp: BigInt
-): LiquidityPool {
+export function getLiquidityPool(tokenAddress: string, timestamp: BigInt): LiquidityPool {
   let lpId = tokenAddress;
 
   let pool = LiquidityPool.load(lpId);
@@ -54,10 +47,7 @@ export function getLiquidityPool(
   return pool;
 }
 
-export function getLpTokenBalance(
-  tokenAddress: string,
-  userAddress: string
-): LpTokenBalance {
+export function getLpTokenBalance(tokenAddress: string, userAddress: string): LpTokenBalance {
   let balanceId = tokenAddress + userAddress;
 
   let balance = LpTokenBalance.load(balanceId);

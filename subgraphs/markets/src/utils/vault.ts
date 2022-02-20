@@ -2,7 +2,7 @@ import { Address, BigInt } from "@graphprotocol/graph-ts";
 
 import { TokenVault } from "../../generated/schema";
 import { ERC721TokenVault } from "../../generated/templates/ERC721TokenVault/ERC721TokenVault";
-import { bigZero } from "../../../../packages/constants";
+import { bigZero } from "./constants";
 
 export function getTokenVault(address: string): TokenVault {
   let vault = TokenVault.load(address);
@@ -15,11 +15,12 @@ export function getTokenVault(address: string): TokenVault {
     let symbolResult = vaultContract.try_symbol();
     let nameResult = vaultContract.try_name();
     let decimalsResult = vaultContract.try_decimals();
+    let totalSupplyResult = vaultContract.try_totalSupply();
+
     vault.symbol = symbolResult.reverted ? "<reverted>" : symbolResult.value;
     vault.name = nameResult.reverted ? "<reverted>" : nameResult.value;
-    vault.decimals = BigInt.fromI32(
-      decimalsResult.reverted ? 0 : decimalsResult.value
-    );
+    vault.decimals = BigInt.fromI32(decimalsResult.reverted ? 0 : decimalsResult.value);
+    vault.totalSupply = totalSupplyResult.reverted ? BigInt.fromI32(0) : totalSupplyResult.value;
 
     vault.save();
   }
