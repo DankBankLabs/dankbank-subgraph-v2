@@ -6,7 +6,7 @@ import { Transaction } from "../../generated/schema";
 export function createTransaction(
     id: string,
     userAddress: string,
-    tokenAddress: string,
+    liquidityPool: string,
     amount: BigInt,
     outputAmount: BigInt[],
     transactionType: TransactionType,
@@ -20,8 +20,8 @@ export function createTransaction(
     let txn = new Transaction(id);
     txn.timestamp = timestamp;
     txn.inAmount = amount;
-    txn.user = userAddress;
-    txn.token = tokenAddress;
+    txn.account = userAddress;
+    txn.liquidityPool = liquidityPool;
     txn.outAmount = outputAmount;
     txn.transactionType = transactionType.toString();
     return txn;

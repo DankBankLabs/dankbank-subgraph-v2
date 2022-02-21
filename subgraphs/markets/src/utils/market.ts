@@ -1,63 +1,77 @@
-import { ByteArray, Address, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 
 import { LiquidityPool, LpTokenBalance } from "../../generated/schema";
 import { bigZero, weiPerEth } from "./constants";
-import { ERC721TokenVault } from "../../generated/templates/ERC721TokenVault/ERC721TokenVault";
 import { DankBankMarket } from "../../generated/DankBankMarket/DankBankMarket";
-import { ensureUserCreated } from "./user";
-import { getTokenVault } from "./vault";
 
-export function updateTokenPrice(liquidityPool: LiquidityPool, tokenAddress: Address, marketAddress: Address): void {
-  let marketContract = DankBankMarket.bind(marketAddress);
-  let ethAndVirtualPoolSupply = marketContract.getTotalEthPoolSupply(tokenAddress);
+export function updateTokenPrice(
+  liquidityPool: LiquidityPool
+): void {
+  let ethAndVirtualPoolSupply = liquidityPool.virtualTokenPoolSupply.plus(liquidityPool.tokenPoolSupply);
 
-  let tokenContract = ERC721TokenVault.bind(tokenAddress);
-  let tokenPoolSupply = tokenContract.balanceOf(marketAddress);
-  let tokenPrice = tokenPoolSupply.gt(bigZero)
-    ? ethAndVirtualPoolSupply.times(weiPerEth).div(tokenPoolSupply)
+  let memeMarketSupply = liquidityPool.memeMarketSupply;
+  let tokenPrice = memeMarketSupply.gt(bigZero)
+    ? ethAndVirtualPoolSupply.times(weiPerEth).div(memeMarketSupply)
     : bigZero;
 
-  liquidityPool.tokenPrice = tokenPrice;
+  liquidityPool.memeTokenPrice = tokenPrice;
 }
 
 export function updateTokenValuation(liquidityPool: LiquidityPool): void {
-  let tokenVault = getTokenVault(liquidityPool.token);
-  liquidityPool.tokenValuation = liquidityPool.tokenPrice.times(
-    // To-Do: Need to make direct call to
-    tokenVault.totalSupply.div(weiPerEth),
+  liquidityPool.memeValuation = liquidityPool.memeTokenPrice.times(
+    liquidityPool.memeTotalSupply
   );
 }
 
-export function getLiquidityPool(tokenAddress: string, timestamp: BigInt): LiquidityPool {
+export function getLiquidityPool(
+  tokenAddress: string,
+  timestamp: BigInt
+): LiquidityPool {
   let lpId = tokenAddress;
 
   let pool = LiquidityPool.load(lpId);
   if (pool == null) {
     pool = new LiquidityPool(lpId);
-    pool.token = tokenAddress;
-    pool.ethPoolSupply = bigZero;
-    pool.virtualEthPoolSupply = bigZero;
+    pool.id = tokenAddress;
+    pool.tokenPoolSupply = bigZero;
+    pool.virtualTokenPoolSupply = bigZero;
     pool.totalVolume = bigZero;
     pool.lpTokenSupply = bigZero;
-    pool.tokenPrice = bigZero;
-    pool.tokenValuation = bigZero;
+    pool.memeTokenPrice = bigZero;
+    pool.memeValuation = bigZero;
+    pool.memeTotalSupply = bigZero;
+    pool.memeMarketSupply = bigZero;
     pool.createdAt = timestamp;
+    pool.symbol = "";
+    pool.name = "";
   }
 
   return pool;
 }
 
-export function getLpTokenBalance(tokenAddress: string, userAddress: string): LpTokenBalance {
+export function getLpTokenBalance(
+  tokenAddress: string,
+  userAddress: string
+): LpTokenBalance {
   let balanceId = tokenAddress + userAddress;
 
   let balance = LpTokenBalance.load(balanceId);
   if (balance == null) {
-    ensureUserCreated(userAddress);
     balance = new LpTokenBalance(balanceId);
     balance.liquidityPool = tokenAddress;
-    balance.user = userAddress;
     balance.balance = bigZero;
   }
 
   return balance;
 }
+
+// TODO finish this logic
+export function updateTokenPools(
+  lp: LiquidityPool,
+  pool0: BigInt,
+  pool1: BigInt,
+): void {
+  lp.memeMarketSupply = pool0;
+  lp.tokenPoolSupply = pool1;
+}
+
