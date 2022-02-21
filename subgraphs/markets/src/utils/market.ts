@@ -1,34 +1,25 @@
-import { ByteArray, Address, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 
 import { LiquidityPool, LpTokenBalance } from "../../generated/schema";
-import { bigZero, weiPerEth } from "../../../../packages/constants";
-import { ERC721TokenVault } from "../../generated/templates/ERC721TokenVault/ERC721TokenVault";
+import { bigZero, weiPerEth } from "./constants";
 import { DankBankMarket } from "../../generated/DankBankMarket/DankBankMarket";
-import { ensureUserCreated } from "./user";
-import { getTokenVault } from "./vault";
 
 export function updateTokenPrice(
-  liquidityPool: LiquidityPool,
-  tokenAddress: Address,
-  marketAddress: Address
+  liquidityPool: LiquidityPool
 ): void {
-  let marketContract = DankBankMarket.bind(marketAddress);
-  let ethAndVirtualPoolSupply =
-    marketContract.getTotalEthPoolSupply(tokenAddress);
+  let ethAndVirtualPoolSupply = liquidityPool.virtualTokenPoolSupply.plus(liquidityPool.tokenPoolSupply);
 
-  let tokenContract = ERC721TokenVault.bind(tokenAddress);
-  let tokenPoolSupply = tokenContract.balanceOf(marketAddress);
-  let tokenPrice = tokenPoolSupply.gt(bigZero)
-    ? ethAndVirtualPoolSupply.times(weiPerEth).div(tokenPoolSupply)
+  let memeMarketSupply = liquidityPool.memeMarketSupply;
+  let tokenPrice = memeMarketSupply.gt(bigZero)
+    ? ethAndVirtualPoolSupply.times(weiPerEth).div(memeMarketSupply)
     : bigZero;
 
   liquidityPool.memeTokenPrice = tokenPrice;
 }
 
 export function updateTokenValuation(liquidityPool: LiquidityPool): void {
-  let tokenVault = getTokenVault(liquidityPool.token);
-  liquidityPool.memeValuation = liquidityPool.tokenPrice.times(
-    tokenVault.totalSupply.div(weiPerEth)
+  liquidityPool.memeValuation = liquidityPool.memeTokenPrice.times(
+    liquidityPool.memeTotalSupply
   );
 }
 
@@ -41,7 +32,7 @@ export function getLiquidityPool(
   let pool = LiquidityPool.load(lpId);
   if (pool == null) {
     pool = new LiquidityPool(lpId);
-    pool.token = tokenAddress;
+    pool.id = tokenAddress;
     pool.tokenPoolSupply = bigZero;
     pool.virtualTokenPoolSupply = bigZero;
     pool.totalVolume = bigZero;
@@ -74,19 +65,13 @@ export function getLpTokenBalance(
   return balance;
 }
 
-type ScaledPools = {
-  scaledPool0: BigInt,
-  scaledPool1: BigInt
-}
-
 // TODO finish this logic
-export function calculateScaledPools(
+export function updateTokenPools(
+  lp: LiquidityPool,
   pool0: BigInt,
   pool1: BigInt,
-): ScaledPools {
-  return {
-    scaledPool0: pool0,
-    scaledPool1: pool1,
-  };
+): void {
+  lp.memeMarketSupply = pool0;
+  lp.tokenPoolSupply = pool1;
 }
 

@@ -1,26 +1,27 @@
 import { Address, log } from "@graphprotocol/graph-ts";
 import {
   DankBankMarket,
-  TokenVault,
   DankBankBuy,
   DankBankSell,
   LiquidityAdded,
   LiquidityRemoved,
 } from "../generated/DankBankMarket/DankBankMarket";
-import { bigZero } from "./utils/constants";
+import { ERC20 as ERC20Contract } from "../generated/DankBankMarket/ERC20" ;
+import { bigZero, TransactionType } from "./utils/constants";
 import {
-  calculateScaledPools,
   getLiquidityPool,
   getLpTokenBalance,
   updateTokenPrice,
   updateTokenValuation,
 } from "./utils/market";
+import { createTransaction } from "./utils/transaction";
 import { isExistingLiquidityPool } from "./utils/vault";
 
 // TODO: Include math for LP fees
 export function handleDankBankBuy(event: DankBankBuy): void {
-  let { token: tokenAddress, tokensBought, investmentAmount } = event.params;
-  let marketAddress = event.address;
+  const tokenAddress = event.params.token;
+  const tokensBought = event.params.tokensBought;
+  const investmentAmount = event.params.investmentAmount;
 
   if (!isExistingLiquidityPool(tokenAddress.toHexString())) {
     return;
@@ -31,30 +32,30 @@ export function handleDankBankBuy(event: DankBankBuy): void {
     event.block.timestamp
   );
 
-  const { 
-    scaledPool0: newMemeMarketSupply,
-    scaledPool1: newTokenPoolSupply
-  } = calculateScaledPools(
-    pool.memeMarketSupply.minus(tokensBought),
-    pool.tokenPoolSupply.plus(investmentAmount)
-  );
-  
-  pool.memeMarketSupply = newMemeMarketSupply;
-  pool.tokenPoolSupply = newTokenPoolSupply;
+  pool.memeMarketSupply = pool.memeMarketSupply.minus(tokensBought),
+  pool.tokenPoolSupply = pool.tokenPoolSupply.plus(investmentAmount);
   pool.totalVolume = pool.totalVolume.plus(investmentAmount);
 
-  let tokenVault = TokenVault.bind(tokenAddress);
-  tokenVault.balanceOf(marketAddress);
-
-  updateTokenPrice(pool, tokenAddress, marketAddress);
+  updateTokenPrice(pool);
   updateTokenValuation(pool);
 
   pool.save();
+
+  createTransaction(
+    event.transaction.hash.toHex(),
+    event.params.buyer.toHexString(),
+    pool.id,
+    event.params.investmentAmount,
+    [event.params.tokensBought],
+    TransactionType.BUY,
+    event.block.timestamp
+  ).save();
 }
 
 export function handleDankBankSell(event: DankBankSell): void {
-  let { token: tokenAddress, tokensSold, returnAmount } = event.params.token;
-  let marketAddress = event.address;
+  const tokenAddress = event.params.token;
+  const tokensSold = event.params.tokensSold;
+  const returnAmount = event.params.returnAmount;
 
   if (!isExistingLiquidityPool(tokenAddress.toHexString())) {
     return;
@@ -65,22 +66,24 @@ export function handleDankBankSell(event: DankBankSell): void {
     event.block.timestamp
   );
 
-  const { 
-    scaledPool0: newMemeMarketSupply,
-    scaledPool1: newTokenPoolSupply
-  } = calculateScaledPools(
-    pool.memeMarketSupply.plus(tokensSold),
-    pool.tokenPoolSupply.sub(returnAmount)
-  );
+  pool.memeMarketSupply = pool.memeMarketSupply.plus(tokensSold);
+  pool.tokenPoolSupply = pool.tokenPoolSupply.minus(returnAmount);
+  pool.totalVolume = pool.totalVolume.minus(returnAmount);
 
-  pool.memeMarketSupply = newMemeMarketSupply;
-  pool.tokenPoolSupply = newTokenPoolSupply;
-  pool.totalVolume = pool.totalVolume.minus(event.params.returnAmount);
-
-  updateTokenPrice(pool, tokenAddress, marketAddress);
+  updateTokenPrice(pool);
   updateTokenValuation(pool);
 
   pool.save();
+
+  createTransaction(
+    event.transaction.hash.toHex(),
+    event.params.seller.toHexString(),
+    pool.id,
+    event.params.tokensSold,
+    [event.params.returnAmount],
+    TransactionType.SELL,
+    event.block.timestamp
+  ).save();
 }
 
 export function handleLiquidityAdded(event: LiquidityAdded): void {
@@ -92,20 +95,20 @@ export function handleLiquidityAdded(event: LiquidityAdded): void {
     event.block.timestamp
   );
   
-  let tokenVault = TokenVault.bind(tokenAddress);
+  let ERC20 = ERC20Contract.bind(tokenAddress);
   if (bigZero.equals(pool.memeMarketSupply)) {
-    pool.memeTotalSupply = tokenVault.totalSupply();
-    pool.name = tokenVault.name();
-    pool.symbol = tokenVault.symbol();
+    pool.memeTotalSupply = ERC20.totalSupply();
+    pool.name = ERC20.name();
+    pool.symbol = ERC20.symbol();
   }
-  pool.memeMarketSupply = tokenVault.balanceOf(marketAddress);
+  pool.memeMarketSupply = ERC20.balanceOf(marketAddress);
 
   let market = DankBankMarket.bind(marketAddress);
   pool.virtualTokenPoolSupply = market.virtualEthPoolSupply(tokenAddress);
   pool.tokenPoolSupply = market.ethPoolSupply(tokenAddress);
   pool.lpTokenSupply = market.lpTokenSupply(market.getTokenId(tokenAddress));
 
-  updateTokenPrice(pool, tokenAddress, event.address);
+  updateTokenPrice(pool);
   updateTokenValuation(pool);
 
   let userAddress = event.params.funder.toHexString();
@@ -119,6 +122,16 @@ export function handleLiquidityAdded(event: LiquidityAdded): void {
 
   lpTokenBalance.save();
   pool.save();
+
+  createTransaction(
+    event.transaction.hash.toHex(),
+    event.params.funder.toHexString(),
+    pool.id,
+    event.params.amountAdded,
+    [event.params.sharesMinted],
+    TransactionType.ADD_LIQUIDITY,
+    event.block.timestamp
+  ).save();
 }
 
 export function handleLiquidityRemoved(event: LiquidityRemoved): void {
@@ -134,8 +147,8 @@ export function handleLiquidityRemoved(event: LiquidityRemoved): void {
     event.block.timestamp
   );
 
-  let tokenVault = TokenVault.bind(tokenAddress);
-  pool.memeMarketSupply = tokenVault.balanceOf(marketAddress);
+  let ERC20 = ERC20Contract.bind(tokenAddress);
+  pool.memeMarketSupply = ERC20.balanceOf(marketAddress);
 
   let market = DankBankMarket.bind(marketAddress);
   pool.virtualTokenPoolSupply = market.virtualEthPoolSupply(tokenAddress);
@@ -151,9 +164,19 @@ export function handleLiquidityRemoved(event: LiquidityRemoved): void {
     event.params.sharesBurnt
   );
 
-  updateTokenPrice(pool, tokenAddress, event.address);
+  updateTokenPrice(pool);
   updateTokenValuation(pool);
 
   lpTokenBalance.save();
   pool.save();
+
+  createTransaction(
+    event.transaction.hash.toHex(),
+    event.params.funder.toHexString(),
+    pool.id,
+    event.params.sharesBurnt,
+    [event.params.tokensRemoved, event.params.ethRemoved],
+    TransactionType.REMOVE_LIQUIDITY,
+    event.block.timestamp
+  ).save();
 }

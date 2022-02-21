@@ -19,14 +19,11 @@ dataSources:
         - DankBankSell
         - LiquidityAdded
         - LiquidityRemoved
-        - TransferBatch
-        - TransferSingle
-        - URI
       abis:
         - name: DankBankMarket
           file: ./abis/DankBankMarket.json
-        - name: ERC721TokenVault
-          file: ./abis/ERC721TokenVault.json
+        - name: ERC20
+          file: ./abis/ERC20.json
       eventHandlers:
         - event: ApprovalForAll(indexed address,indexed address,bool)
           handler: handleApprovalForAll
@@ -38,63 +35,7 @@ dataSources:
           handler: handleLiquidityAdded
         - event: LiquidityRemoved(indexed address,address,uint256,uint256,uint256)
           handler: handleLiquidityRemoved
-        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-          handler: handleTransferBatch
-        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-          handler: handleTransferSingle
-        - event: URI(string,indexed uint256)
-          handler: handleURI
       file: ./src/marketMapping.ts
-  - kind: ethereum/contract
-    name: ERC721VaultFactory
-    network: "{{network}}"
-    source:
-      address: "{{vaultFactory}}"
-      abi: ERC721VaultFactory
-      startBlock: {{vaultFactoryStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Mint
-      abis:
-        - name: ERC721VaultFactory
-          file: ./abis/ERC721VaultFactory.json
-        - name: ERC721MetaData
-          file: ./abis/ERC721MetaData.json
-        - name: ERC721TokenVault
-          file: ./abis/ERC721TokenVault.json
-      eventHandlers:
-        - event: Mint(indexed address,uint256,uint256,address,uint256)
-          handler: handleMint
-      file: ./src/vaultFactoryMapping.ts
-  {{#isMainnet}}
-  - kind: ethereum/contract
-    name: ERC721SingleVaultFactory
-    network: "{{network}}"
-    source:
-      address: "{{singleVaultFactory}}"
-      abi: ERC721VaultFactory
-      startBlock: {{singleVaultFactoryStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Mint
-      abis:
-        - name: ERC721VaultFactory
-          file: ./abis/ERC721VaultFactory.json
-        - name: ERC721MetaData
-          file: ./abis/ERC721MetaData.json
-        - name: ERC721TokenVault
-          file: ./abis/ERC721TokenVault.json
-      eventHandlers:
-        - event: Mint(indexed address,uint256,uint256,address,uint256)
-          handler: handleMint
-      file: ./src/vaultFactoryMapping.ts
-  {{/isMainnet}}
   - kind: ethereum/contract
     name: BatchAuctionFactory
     network: "{{network}}"
@@ -118,63 +59,6 @@ dataSources:
           handler: handleCreateMarket
       file: ./src/batchAuctionFactoryMapping.ts
 templates:
-  - kind: ethereum/contract
-    name: ERC721TokenVault
-    network: "{{network}}"
-    source:
-      abi: ERC721TokenVault
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: ERC721TokenVault
-          file: ./abis/ERC721TokenVault.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-        - event: Start(indexed address,uint256)
-          handler: handleStart
-        - event: Won(indexed address,uint256)
-          handler: handleWon
-        - event: Bid(indexed address,uint256)
-          handler: handleBid
-        - event: Redeem(indexed address)
-          handler: handleRedeem
-        - event: PriceUpdate(indexed address,uint256)
-          handler: handlePriceUpdate
-        {{#isMainnet}}
-      callHandlers:
-        - function: initialize(address,address,uint256,uint256,uint256,uint256,string memory,string memory)
-          handler: handleInitialize
-        - function: kickCurator(address)
-          handler: handleKickCurator
-        - function: updateCurator(address)
-          handler: handleUpdateCurator
-        - function: updateFee(uint256)
-          handler: handleUpdateFee
-      {{/isMainnet}}
-      file: ./src/tokenVaultMapping.ts
-  - kind: ethereum/contract
-    name: ERC721MetaData
-    network: "{{network}}"
-    source:
-      abi: ERC721MetaData
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      abis:
-        - name: ERC721MetaData
-          file: ./abis/ERC721MetaData.json
-      entities:
-        - Transfer
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: hanldeTransfer
-      file: ./src/nftMapping.ts
   - kind: ethereum/contract
     name: BatchAuction
     network: "{{network}}"
