@@ -1,8 +1,7 @@
-import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 
 import { LiquidityPool, LpTokenBalance } from "../../generated/schema";
 import { bigZero, weiPerEth } from "./constants";
-import { DankBankMarket } from "../../generated/DankBankMarket/DankBankMarket";
 
 export function updateTokenPrice(
   liquidityPool: LiquidityPool

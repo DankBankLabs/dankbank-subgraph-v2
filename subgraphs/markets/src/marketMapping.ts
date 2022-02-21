@@ -1,4 +1,5 @@
-import { Address, log } from "@graphprotocol/graph-ts";
+import { Address } from "@graphprotocol/graph-ts";
+import { calculateBuyTokensOut, calculateSellEthOrTokenOut } from "@dank-bank/markets";
 import {
   DankBankMarket,
   DankBankBuy,
@@ -17,7 +18,6 @@ import {
 import { createTransaction } from "./utils/transaction";
 import { isExistingLiquidityPool } from "./utils/vault";
 
-// TODO: Include math for LP fees
 export function handleDankBankBuy(event: DankBankBuy): void {
   const tokenAddress = event.params.token;
   const tokensBought = event.params.tokensBought;
@@ -68,7 +68,7 @@ export function handleDankBankSell(event: DankBankSell): void {
 
   pool.memeMarketSupply = pool.memeMarketSupply.plus(tokensSold);
   pool.tokenPoolSupply = pool.tokenPoolSupply.minus(returnAmount);
-  pool.totalVolume = pool.totalVolume.minus(returnAmount);
+  pool.totalVolume = pool.totalVolume.plus(returnAmount);
 
   updateTokenPrice(pool);
   updateTokenValuation(pool);
