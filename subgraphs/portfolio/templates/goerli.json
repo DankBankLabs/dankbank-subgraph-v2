@@ -1,5 +1,11 @@
 {
 	"network": "goerli",
-	"10Guy": "0xe0424eCb102610348DD3e1F1bB59748E7e288196",
-	"10GuyStartBlock": 5109149
+	"DEEZ": "0xdb83ae1e0ab68015763255ce0b26ffb4d6b732d2",
+	"DEEZStartBlock": 5653523,
+	"BadLuckBrian": "0x2f71a79d24536f8e9a44bb7d5349f42ac6365b84",
+	"BadLuckBrianStartBlock": 5249471,
+	"CoolStickGuy": "0x134f0A2Dc4006c37b285D4EBeB98362d525487D1",
+	"CoolStickGuyStartBlock": 6201649,
+	"PatriotsSuck": "0x83F3940e28A498FfCcD6e433014d2412cE2Acd4e",
+	"PatriotsSuckStartBlock": 6211983
 }

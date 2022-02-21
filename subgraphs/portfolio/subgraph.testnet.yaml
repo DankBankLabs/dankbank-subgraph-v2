@@ -1,0 +1,84 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DEEZ
+    network: "{{network}}"
+    source:
+      address: "{{DEEZ}}"
+      abi: ERC20
+      startBlock: {{DEEZStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/erc20Mapping.ts
+  - kind: ethereum/contract
+    name: BadLuckBrian
+    network: "{{network}}"
+    source:
+      address: "{{BadLuckBrian}}"
+      abi: ERC20
+      startBlock: {{BadLuckBrianStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/erc20Mapping.ts
+  - kind: ethereum/contract
+    name: CoolStickGuy
+    network: "{{network}}"
+    source:
+      address: "{{CoolStickGuy}}"
+      abi: ERC20
+      startBlock: {{CoolStickGuyStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/erc20Mapping.ts
+  - kind: ethereum/contract
+    name: PatriotsSuck
+    network: "{{network}}"
+    source:
+      address: "{{PatriotsSuck}}"
+      abi: ERC20
+      startBlock: {{PatriotsSuckStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/erc20Mapping.ts
