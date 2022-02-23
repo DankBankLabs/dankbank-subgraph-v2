@@ -27,5 +27,9 @@
 	"TipsFedora": "0xe833d71911d3ebcd7d7a98e30d433e616aa4e7c7",
 	"TipsFedoraStartBlock": 12934485,
 	"SuccessKid": "0xee2fc76642342d3d70401ecd03e8e0b2544bfe00",
-	"SuccessKidStartBlock": 14129802
+	"SuccessKidStartBlock": 14129802,
+	"SatanPepe": "0x937a2cd137fe77db397c51975b0caaaa29559cf7",
+	"SatanPepeStartBlock": 14129802,
+	"Mommy": "0x495f947276749ce646f68ac8c248420045cb7b5e",
+	"MommyStartBlock": 14129802
 }

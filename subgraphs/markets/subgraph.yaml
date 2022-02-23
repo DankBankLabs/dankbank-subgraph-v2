@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DankBankMarket
-    network: "goerli"
+    network: "mainnet"
     source:
-      address: "0xe0424eCb102610348DD3e1F1bB59748E7e288196"
+      address: "0x0988Fb1C153a6f6492218Ead6b17fd795d6D18F9"
       abi: DankBankMarket
-      startBlock: 5109149
+      startBlock: 12912179
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -38,11 +38,11 @@ dataSources:
       file: ./src/marketMapping.ts
   - kind: ethereum/contract
     name: BatchAuctionFactory
-    network: "goerli"
+    network: "mainnet"
     source:
-      address: "0x3F3a810E37a0b56eB37860C43997867F5351c58a"
+      address: "0x70e3021C31d199dec9cBf23b89C08A64E3701A0C"
       abi: MISOMarket
-      startBlock: 5488656
+      startBlock: 13965593
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -61,7 +61,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: BatchAuction
-    network: "goerli"
+    network: "mainnet"
     source:
       abi: BatchAuction
     mapping:
