@@ -1,6 +1,6 @@
 {
     "network": "matic",
-    "market": "0x313Ee96F3781299D118377E9d2968Fa4c31Ac406",
-    "marketStartBlock": 25329819,
+    "market": "0x4879c430F8cDc96c07aCe5AaBf63dBcb690C8186",
+    "marketStartBlock": 25427500,
     "isMainnet": false
 }
