@@ -1,0 +1,64 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DTD
+    network: "{{network}}"
+    source:
+      address: "{{DTD}}"
+      abi: ERC20
+      startBlock: {{DTDStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/erc20Mapping.ts
+  - kind: ethereum/contract
+    name: DTD3
+    network: "{{network}}"
+    source:
+      address: "{{DTD3}}"
+      abi: ERC20
+      startBlock: {{DTD3StartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/erc20Mapping.ts
+  - kind: ethereum/contract
+    name: DMT
+    network: "{{network}}"
+    source:
+      address: "{{DMT}}"
+      abi: ERC20
+      startBlock: {{DMTStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/erc20Mapping.ts

@@ -3,5 +3,6 @@
     "market": "0xe0424eCb102610348DD3e1F1bB59748E7e288196",
     "marketStartBlock": 5109149,
     "misoMarket": "0x3F3a810E37a0b56eB37860C43997867F5351c58a",
-    "misoMarketStartBlock": 5488656
+    "misoMarketStartBlock": 5488656,
+    "isMainnet": false
 }

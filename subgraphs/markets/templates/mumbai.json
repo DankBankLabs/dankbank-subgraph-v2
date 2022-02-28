@@ -1,5 +1,6 @@
 {
     "network": "mumbai",
-    "market": "0xe0424eCb102610348DD3e1F1bB59748E7e288196",
-    "marketStartBlock": 5109149
+    "market": "0xFc509DB19c008D851F1823961B541b65FbEf43ff",
+    "marketStartBlock": 24754174,
+    "isMainnet": false
 }
