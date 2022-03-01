@@ -36,7 +36,7 @@ dataSources:
         - event: LiquidityRemoved(indexed address,address,uint256,uint256,uint256)
           handler: handleLiquidityRemoved
       file: ./src/marketMapping.ts
-  {{#isMainnet}}
+{{#isMainnet}}
   - kind: ethereum/contract
     name: BatchAuctionFactory
     network: "{{network}}"
@@ -59,7 +59,6 @@ dataSources:
         - event: MarketCreated(indexed address,indexed address,address)
           handler: handleCreateMarket
       file: ./src/batchAuctionFactoryMapping.ts
-  {{/isMainnet}}
 templates:
   - kind: ethereum/contract
     name: BatchAuction
@@ -81,3 +80,4 @@ templates:
         - event: AuctionFinalized()
           handler: handleAuctionFinalized
       file: ./src/batchAuctionMapping.ts
+{{/isMainnet}}
