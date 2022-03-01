@@ -1,0 +1,38 @@
+specVersion: 0.0.4
+schema:
+  file: ./schemas/schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DankBankMarketGSN
+    network: "{{network}}"
+    source:
+      address: "{{market}}"
+      abi: DankBankMarketGSN
+      startBlock: {{marketStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - ApprovalForAll
+        - DankBankBuy
+        - DankBankSell
+        - LiquidityAdded
+        - LiquidityRemoved
+      abis:
+        - name: DankBankMarketGSN
+          file: ./abis/DankBankMarketGSN.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: DankBankBuy(indexed address,address,uint256,uint256)
+          handler: handleDankBankBuy
+        - event: DankBankSell(indexed address,address,uint256,uint256)
+          handler: handleDankBankSell
+        - event: LiquidityAdded(indexed address,address,uint256,uint256,uint256)
+          handler: handleLiquidityAdded
+        - event: LiquidityRemoved(indexed address,address,uint256,uint256,uint256)
+          handler: handleLiquidityRemoved
+      file: ./src/maticMarketMapping.ts
