@@ -19,7 +19,7 @@ export function updateTokenPrice(
 export function updateTokenValuation(liquidityPool: LiquidityPool): void {
   liquidityPool.memeValuation = liquidityPool.memeTokenPrice.times(
     liquidityPool.memeTotalSupply
-  );
+  ).div(weiPerEth);
 }
 
 export function getLiquidityPool(
