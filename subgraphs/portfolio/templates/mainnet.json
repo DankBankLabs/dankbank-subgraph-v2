@@ -31,5 +31,9 @@
 	"SatanPepe": "0x84b26537ed37d7ee4cf9a16bf148b623cfeb7a88",
 	"SatanPepeStartBlock": 14250375,
 	"Mommy": "0xf09d8ce551382bb9a5032edf92989ab1c87df5a6",
-	"MommyStartBlock": 14249702
+	"MommyStartBlock": 14249702,
+	"Genius": "0x362bf4c20952d9eb06cf473bfc3ca79592c831b0",
+	"GeniusStartBlock": 14327793,
+	"DANKPEPE": "0x1a3414f3242ebdc3e9ee94222198a8d5f0c2900d",
+	"DANKPEPEStartBlock": 14320789
 }
