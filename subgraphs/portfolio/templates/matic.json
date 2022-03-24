@@ -1,5 +1,7 @@
 {
 	"network": "matic",
 	"MTM": "0x4822996A6C3AD323048a93Cb4d2523084Bf44Afd",
-	"MTMStartBlock": 25333879
+	"MTMStartBlock": 25333879,
+	"HideYoKids": "0x450345e119d8b6f7dc01487beae31f28cee4cd4e",
+	"HideYoKidsStartBlock": 26011183 
 }
