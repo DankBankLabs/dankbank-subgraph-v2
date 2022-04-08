@@ -33,4 +33,7 @@ export class TransactionType extends NamedObject {
   static readonly COMMIT_TO_AUCTION: TransactionType = new TransactionType(
     "COMMIT_TO_AUCTION"
   );
+  static readonly CLAIM_FROM_AUCTION: TransactionType = new TransactionType(
+    "CLAIM_FROM_AUCTION"
+  );
 }
