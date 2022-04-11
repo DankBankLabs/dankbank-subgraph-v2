@@ -79,5 +79,8 @@ templates:
           handler: handleCommitEth
         - event: AuctionFinalized()
           handler: handleAuctionFinalized
+      callHandlers:
+        - function: withdrawTokens(address)
+          handler: handleWithdrawTokens
       file: ./src/batchAuctionMapping.ts
 {{/isMainnet}}
