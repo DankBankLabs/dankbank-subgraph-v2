@@ -63,6 +63,10 @@ export function handleWithdrawTokens(call: WithdrawTokensCall): void {
     contract.auctionToken().toHexString(),
     call.block.timestamp
   );
+  if (pool.createdAt.equals(call.block.timestamp)) {
+    // save created pool as getLiquidityPool doesn't save
+    pool.save();
+  }
 
   createTransaction(
     call.transaction.hash.toHex(),

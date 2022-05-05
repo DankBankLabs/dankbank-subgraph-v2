@@ -1,6 +1,6 @@
 specVersion: 0.0.4
 schema:
-  file: ./schemas/schema.graphql
+  file: ./schemas/maticSchema.graphql
 dataSources:
   - kind: ethereum/contract
     name: DankBankMarketGSN
@@ -36,3 +36,42 @@ dataSources:
         - event: LiquidityRemoved(indexed address,address,uint256,uint256,uint256)
           handler: handleLiquidityRemoved
       file: ./src/maticMarketMapping.ts
+  - kind: ethereum/contract
+    name: MerkleClaimERC20Factory
+    network: "{{network}}"
+    source:
+      address: "{{airdrop}}"
+      abi: MerkleClaimERC20Factory
+      startBlock: {{airdropStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MerkleClaimERC20Factory
+      abis:
+        - name: MerkleClaimERC20Factory
+          file: ./abis/MerkleClaimERC20Factory.json
+      eventHandlers:
+        - event: Build(address)
+          handler: handleBuild
+      file: ./src/airdropFactoryMapping.ts
+templates:
+  - kind: ethereum/contract
+    name: MerkleClaimERC20
+    network: "{{network}}"
+    source:
+      abi: MerkleClaimERC20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MerkleClaimERC20
+      abis:
+        - name: MerkleClaimERC20
+          file: ./abis/MerkleClaimERC20.json
+      eventHandlers:
+        - event: Claim(indexed address,uint256)
+          handler: handleClaim
+      file: ./src/airdropMapping.ts

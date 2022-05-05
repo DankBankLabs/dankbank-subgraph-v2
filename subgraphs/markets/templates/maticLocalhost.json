@@ -1,5 +1,7 @@
 {
     "network": "localhost",
     "market": "0xe0424eCb102610348DD3e1F1bB59748E7e288196",
-    "marketStartBlock": 5109149
+    "marketStartBlock": 5109149,
+    "airdrop": "0x0fe11C252a2A57A902288d21Af5D780D8bD14dB8",
+    "airdropStartBlock": 25843036
 }

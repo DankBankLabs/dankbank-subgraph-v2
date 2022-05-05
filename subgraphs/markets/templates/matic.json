@@ -2,5 +2,7 @@
     "network": "matic",
     "market": "0x64c5cd052dc212e774f6d46f0d1845d457d02981",
     "marketStartBlock": 25427508,
-    "isMainnet": false
+    "isMainnet": false,
+    "airdrop": "0x0000000000000000000000000000000000000000",
+    "airdropStartBlock": "24754174"
 }
