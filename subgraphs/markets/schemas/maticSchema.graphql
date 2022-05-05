@@ -42,4 +42,22 @@ enum TransactionType {
   SELL
   ADD_LIQUIDITY
   REMOVE_LIQUIDITY
+  CLAIM_FROM_AIRDROP
+}
+
+type Transaction @entity {
+  "hash of the transaction"
+  id: ID!
+  "token amount into the AMM"
+  inAmount: BigInt!
+  "token amount out of the AMM"
+  outAmount: [BigInt!]
+  "account address who performed the transaction"
+  account: String!
+  "liquidity pool associated with the transaction"
+  liquidityPool: LiquidityPool!
+  "type of the transaction"
+  transactionType: TransactionType
+  "timestamp"
+  timestamp: BigInt!
 }
