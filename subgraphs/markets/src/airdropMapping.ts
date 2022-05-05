@@ -11,6 +11,10 @@ export function handleClaim(event: Claim): void {
     contract.memeTokenAddress().toHexString(),
     event.block.timestamp
   );
+  if (pool.createdAt.equals(event.block.timestamp)) {
+    // save created pool as getLiquidityPool doesn't save
+    pool.save();
+  }
 
   createTransaction(
     event.transaction.hash.toHex(),
