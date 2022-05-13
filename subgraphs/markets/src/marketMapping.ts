@@ -5,6 +5,7 @@ import {
   DankBankSell,
   LiquidityAdded,
   LiquidityRemoved,
+  TransferSingle,
 } from "../generated/DankBankMarket/DankBankMarket";
 import { ERC20 as ERC20Contract } from "../generated/DankBankMarket/ERC20";
 import { bigZero, TransactionType } from "./utils/constants";
@@ -151,4 +152,17 @@ export function handleLiquidityRemoved(event: LiquidityRemoved): void {
     TransactionType.REMOVE_LIQUIDITY,
     event.block.timestamp,
   ).save();
+}
+
+export function handleLPTokenTransfer(event: TransferSingle): void {
+  let tokenAddress = Address.fromBigInt(event.params.id);
+
+  let lpTokenBalanceFrom = getLpTokenBalance(tokenAddress.toHexString(), event.params.from.toHexString());
+  let lpTokenBalanceTo = getLpTokenBalance(tokenAddress.toHexString(), event.params.to.toHexString());
+
+  lpTokenBalanceFrom.balance = lpTokenBalanceFrom.balance.minus(event.params.value);
+  lpTokenBalanceTo.balance = lpTokenBalanceTo.balance.plus(event.params.value);
+
+  lpTokenBalanceFrom.save();
+  lpTokenBalanceTo.save();
 }

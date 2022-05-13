@@ -35,6 +35,8 @@ dataSources:
           handler: handleLiquidityAdded
         - event: LiquidityRemoved(indexed address,address,uint256,uint256,uint256)
           handler: handleLiquidityRemoved
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleLPTokenTransfer
       file: ./src/maticMarketMapping.ts
   - kind: ethereum/contract
     name: MerkleClaimERC20Factory
