@@ -25,8 +25,6 @@ dataSources:
         - name: ERC20
           file: ./abis/ERC20.json
       eventHandlers:
-        - event: ApprovalForAll(indexed address,indexed address,bool)
-          handler: handleApprovalForAll
         - event: DankBankBuy(indexed address,address,uint256,uint256)
           handler: handleDankBankBuy
         - event: DankBankSell(indexed address,address,uint256,uint256)
