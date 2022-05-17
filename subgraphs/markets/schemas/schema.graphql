@@ -71,6 +71,7 @@ enum TransactionType {
   REMOVE_LIQUIDITY
   COMMIT_TO_AUCTION
   CLAIM_FROM_AUCTION
+  CLAIM_FROM_AIRDROP
 }
 
 type Transaction @entity {
