@@ -1,7 +1,7 @@
 {
     "network": "mumbai",
-    "market": "0xfc509db19c008d851f1823961b541b65fbef43ff",
-    "marketStartBlock": 24754174,
+    "market": "0x7378902013055c2E360232c02E69C555be31F759",
+    "marketStartBlock": 26632311,
     "isMainnet": false,
     "airdrop": "0x0fe11C252a2A57A902288d21Af5D780D8bD14dB8",
     "airdropStartBlock": 25843036
