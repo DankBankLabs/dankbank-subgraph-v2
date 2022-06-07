@@ -5,5 +5,7 @@
 	"DTD3": "0x4c1cc850971d34e0480273a1394c5dd6f3af357b",
 	"DTD3StartBlock": 25281999,
 	"DMT": "0x2c496d7a5be0eb3ea62bc44dbcd1c5605669fdc8",
-	"DMTStartBlock": 25282019
+	"DMTStartBlock": 25282019,
+	"AIR": "0x9590e1f7ae5067cbebbe7b37043fadae67380666",
+	"AIRStartBlock": 26632676
 }
