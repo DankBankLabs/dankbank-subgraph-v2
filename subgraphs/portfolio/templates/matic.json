@@ -23,7 +23,7 @@
 	"HoneyBadger": "0xfa90517482edf50cd8cf53ee68eda28f70443f53",
 	"HoneyBadgerStartBlock": 26362804,
 	"Croissant": "0x21ba992a493d0a50cdad981ac1329b49172038e4",
-	"CroissantStartBlock":  26011290,
+	"CroissantStartBlock": 26011290,
 	"Mommy": "0x52dc058104d61a827c2be671f71c80f962f8f8ff",
 	"MommyStartBlock": 26014337,
 	"Chickens": "0x8be5cd897f64b45c28b517eafb03b32ea5a6c712",
@@ -35,5 +35,7 @@
 	"Success": "0x506143f1cea18a4d880cee60e01a55b678cfcfab",
 	"SuccessStartBlock": 26351230,
 	"2PBF": "0x6699421b0667f19c3154d2a09b0c6e37244bfc76",
-	"2PBFStartBlock": 26011347
+	"2PBFStartBlock": 26011347,
+	"TradeOffer": "0x39EA286F590029634Db31440e4730fB026658951",
+	"TradeOfferStartBlock": 29130888
 }

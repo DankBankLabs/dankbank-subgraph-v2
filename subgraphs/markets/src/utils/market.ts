@@ -3,9 +3,7 @@ import { BigInt } from "@graphprotocol/graph-ts";
 import { LiquidityPool, LpTokenBalance } from "../../generated/schema";
 import { bigZero, weiPerEth } from "./constants";
 
-export function updateTokenPrice(
-  liquidityPool: LiquidityPool
-): void {
+export function updateTokenPrice(liquidityPool: LiquidityPool): void {
   let ethAndVirtualPoolSupply = liquidityPool.virtualTokenPoolSupply.plus(liquidityPool.tokenPoolSupply);
 
   let memeMarketSupply = liquidityPool.memeMarketSupply;
@@ -17,15 +15,10 @@ export function updateTokenPrice(
 }
 
 export function updateTokenValuation(liquidityPool: LiquidityPool): void {
-  liquidityPool.memeValuation = liquidityPool.memeTokenPrice.times(
-    liquidityPool.memeTotalSupply
-  ).div(weiPerEth);
+  liquidityPool.memeValuation = liquidityPool.memeTokenPrice.times(liquidityPool.memeTotalSupply).div(weiPerEth);
 }
 
-export function getLiquidityPool(
-  tokenAddress: string,
-  timestamp: BigInt
-): LiquidityPool {
+export function getLiquidityPool(tokenAddress: string, timestamp: BigInt): LiquidityPool {
   let lpId = tokenAddress;
 
   let pool = LiquidityPool.load(lpId);
@@ -48,10 +41,7 @@ export function getLiquidityPool(
   return pool;
 }
 
-export function getLpTokenBalance(
-  tokenAddress: string,
-  userAddress: string
-): LpTokenBalance {
+export function getLpTokenBalance(tokenAddress: string, userAddress: string): LpTokenBalance {
   let balanceId = tokenAddress + userAddress;
 
   let balance = LpTokenBalance.load(balanceId);
@@ -65,12 +55,7 @@ export function getLpTokenBalance(
 }
 
 // TODO finish this logic
-export function updateTokenPools(
-  lp: LiquidityPool,
-  pool0: BigInt,
-  pool1: BigInt,
-): void {
+export function updateTokenPools(lp: LiquidityPool, pool0: BigInt, pool1: BigInt): void {
   lp.memeMarketSupply = pool0;
   lp.tokenPoolSupply = pool1;
 }
-
