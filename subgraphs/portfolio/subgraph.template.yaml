@@ -402,3 +402,23 @@ dataSources:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
       file: ./src/erc20Mapping.ts
+  - kind: ethereum/contract
+    name: TradeOffer
+    network: "{{network}}"
+    source:
+      address: "{{TradeOffer}}"
+      abi: ERC20
+      startBlock: {{TradeOfferStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/erc20Mapping.ts
